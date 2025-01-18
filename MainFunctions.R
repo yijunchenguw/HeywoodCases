@@ -9,7 +9,6 @@ library(MASS)
 source("approaches.R")
 source("ModelDefine.R")
 numofItems <- 12
-setwd(path)
 n_factors <- 2
 df <- 53
 # Define lambda structure as a binary matrix indicating fixed vs. free parameters
@@ -30,7 +29,7 @@ lambda_structure <- matrix(c(
 lambda_mask <- torch_tensor(lambda_structure)
 for(size in c(100, 200,500))
 {
-  for(loading in c(9))
+  for(loading in c(3,6,9))
   {
     nameofmodel <- get(paste0("pop.mod",".", loading, sep = ""))
     mod_constraint <- get("mod_constraint")
@@ -57,7 +56,7 @@ for(size in c(100, 200,500))
     result_loading_5 <- c()
     heywood <- 0
     for (i in c(1:500)) {
-    cat("loading:",loading,";size:", size,";i:",i, "\n")
+    cat("loading:",loading/10,";size:", size,";i:",i, "\n")
     set.seed(i+100)
     datb <- simulateData(nameofmodel, sample.nobs=size)-1
     fit_method1 <- lavaan::cfa(mod_no_constraint, data=datb)
